@@ -5,6 +5,7 @@ import {
 import Layout from "./layout/Layout"; 
 import GamePage from "./pages/GamePage";
 import HomePage from "./pages/HomePage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const router = createBrowserRouter([
@@ -15,6 +16,10 @@ function App() {
         {
           path: "/",
           element: <HomePage />
+        },
+        {
+          path: "/profile",
+          element: <ProfilePage />
         },
         {
           path: "/games/:gameId",

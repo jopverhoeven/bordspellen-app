@@ -1,5 +1,5 @@
-import { AiOutlineMenu } from "react-icons/ai";
-import { Outlet } from "react-router-dom";
+import { AiOutlineUser } from "react-icons/ai";
+import { Link, Outlet } from "react-router-dom";
 
 export default function Layout() {
   return (
@@ -11,10 +11,10 @@ export default function Layout() {
                       h-16 
                       p-2"
       >
-        <button className="bg-red-200 rounded p-2">
-          <AiOutlineMenu size={20} />
-        </button>
-        <p className="font-bold">Bordspellen Dawn en Jop</p>
+        <Link to={"/profile"} className="bg-red-200 rounded p-2">
+          <AiOutlineUser size={20} />
+        </Link>
+        <Link to={"/"} className="font-bold">Bordspellen Dawn en Jop</Link>
       </div>
       <Outlet />
     </div>

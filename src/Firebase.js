@@ -8,7 +8,7 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBlVamFvsTS4R2XYQ8Ygbsyv93YWdNsCVg",
-  authDomain: "scoreboard-games.firebaseapp.com",
+  authDomain: "localhost",
   projectId: "scoreboard-games",
   storageBucket: "scoreboard-games.appspot.com",
   messagingSenderId: "522550849697",
