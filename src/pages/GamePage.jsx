@@ -27,7 +27,6 @@ export default function GamePage() {
         });
     }
     
-
     const fetchScores = async () => {
         onSnapshot(collection(db, `games/${gameId}/scores`), (collection) => {
             const scores = collection.docs.map(score => ({
@@ -51,29 +50,46 @@ export default function GamePage() {
     }
 
     if (loading) {
-        return <div>Laden...</div>
+        return (
+            <div className="flex flex-col p-2">
+                <div className="flex flex-col w-full bg-red-200 rounded p-2">
+                    <p className="text-center font-bold">Laden...</p>
+                </div>
+            </div>
+        )
     }
+
+
+    const scoresHtml = [];
+    scores.map((score, i) => {
+        const date = new Date(score.date);
+        scoresHtml.push(
+            <div key={i} className="flex flex-col w-full bg-red-200 rounded p-2">
+                <p className="text-center text-xl font-bold">🏆 {score.winner}</p>
+                <div className="text-center">
+                    <p className="text-lg ">{date.toLocaleDateString('nl')}</p>
+                    <p className="text-sm">{date.toLocaleTimeString('nl')}</p>
+                </div>
+            </div>
+        )
+    })
+
 
     return (
         <div className="flex flex-col p-2">
             <div className="flex flex-col w-full bg-red-200 rounded p-2">
-                <p className="text-center font-bold">{game.shortName} {game.name}</p>
+                <p className="text-xl text-center font-bold">{game.shortName} {game.name}</p>
             </div>
-            <div>
                 {scores.length === 0 ? 
                 <p>Nog geen scores gevonden</p> 
-                : scores.map((score, i) => {
-                    const date = new Date(score.date);
-                    return (
-                        <div key={i}>
-                            {score.winner}
-                            {date.toLocaleDateString('nl')}
-                            {date.toLocaleTimeString('nl')}
-                            {score.participants}
-                        </div>
-                    )
-                })}
-            </div>
+                : 
+                <div className="">
+                    <p>Vorige uitslagen:</p>
+                    <div className="grid grid-cols-3 place-items-center gap-2">
+                    {scoresHtml}
+                    </div>
+                </div>
+            }
         </div>
     )
 }

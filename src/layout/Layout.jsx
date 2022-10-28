@@ -9,12 +9,14 @@ export default function Layout() {
                       space-x-2 
                       items-center 
                       h-16 
-                      p-2"
+                      mx-2
+                      border-b
+                      border-b-gray-400"
       >
         <Link to={"/profile"} className="bg-red-200 rounded p-2">
           <AiOutlineUser size={20} />
         </Link>
-        <Link to={"/"} className="font-bold">Bordspellen Dawn en Jop</Link>
+        <Link to={"/"} className="font-bold text-xl">(Bord)spellen Dawn en Jop</Link>
       </div>
       <Outlet />
     </div>
