@@ -25,15 +25,17 @@ export default function HomePage() {
     }, [])
 
     return (
-        <div className="flex flex-col w-full p-2">
-            <p className="mb-2 text-lg">{games.length} spelletjes</p>
-            <div className="grid grid-cols-3 place-items-center gap-2">
+        <div className="flex flex-col w-full">
+            <p className="mb-2 text-lg ml-2">{games.length} spelletjes</p>
+            <div className="grid grid-cols-3 md:grid-cols-6 place-items-center">
             {games.map((game, i) => {
                 return (
-                    <Link to={`games/${game.id}`} key={i} className="flex flex-col items-center justify-center text-center p-2 w-32 h-32 rounded bg-contain bg-no-repeat bg-center bg-red-200" style={{backgroundImage: `url(${game.image})`}}>
+                    <div className="p-2 w-full">
+                    <Link to={`games/${game.id}`} key={i} className="flex flex-col items-center justify-center text-center w-full h-32 rounded bg-contain bg-no-repeat bg-center bg-red-900 hover:bg-red-700 hover:scale-105 transition-all" style={{backgroundImage: `url(${game.image})`}}>
                         <p className="text-3xl">{game.shortName}</p>
                         <p>{game.name}</p>
                     </Link>
+                    </div>
                 );
             })}
         </div>

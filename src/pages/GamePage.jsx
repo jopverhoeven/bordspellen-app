@@ -52,7 +52,7 @@ export default function GamePage() {
     if (loading) {
         return (
             <div className="flex flex-col p-2">
-                <div className="flex flex-col w-full bg-red-200 rounded p-2">
+                <div className="flex flex-col w-full bg-red-900 rounded p-2">
                     <p className="text-center font-bold">Laden...</p>
                 </div>
             </div>
@@ -61,14 +61,16 @@ export default function GamePage() {
 
 
     const scoresHtml = [];
-    scores.map((score, i) => {
+    scores.forEach((score, i) => {
         const date = new Date(score.date);
         scoresHtml.push(
-            <div key={i} className="flex flex-col w-full bg-red-200 rounded p-2">
-                <p className="text-center text-xl font-bold">🏆 {score.winner}</p>
-                <div className="text-center">
-                    <p className="text-lg ">{date.toLocaleDateString('nl')}</p>
-                    <p className="text-sm">{date.toLocaleTimeString('nl')}</p>
+            <div className="w-full p-2">
+                <div key={i} className="flex flex-col items-center justify-center text-center w-full h-32 rounded bg-contain bg-no-repeat bg-center bg-red-900 hover:bg-red-700 hover:scale-105 transition-all">
+                    <p className="text-center text-xl font-bold">🏆 {score.winner}</p>
+                    <div className="text-center">
+                        <p className="text-lg ">{date.toLocaleDateString('nl')}</p>
+                        <p className="text-sm">{date.toLocaleTimeString('nl')}</p>
+                    </div>
                 </div>
             </div>
         )
@@ -77,15 +79,15 @@ export default function GamePage() {
 
     return (
         <div className="flex flex-col p-2">
-            <div className="flex flex-col w-full bg-red-200 rounded p-2">
+            <div className="flex flex-col w-full bg-red-900 rounded p-2">
                 <p className="text-xl text-center font-bold">{game.shortName} {game.name}</p>
             </div>
                 {scores.length === 0 ? 
                 <p>Nog geen scores gevonden</p> 
                 : 
-                <div className="">
-                    <p>Vorige uitslagen:</p>
-                    <div className="grid grid-cols-3 place-items-center gap-2">
+                <div>
+                    <p className="">Vorige uitslagen:</p>
+                    <div className="grid grid-cols-3 md:grid-cols-6 place-items-center">
                     {scoresHtml}
                     </div>
                 </div>
