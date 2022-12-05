@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../Firebase";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { IoMdAdd, IoMdArrowBack, IoMdCreate } from "react-icons/io";
 
 
 export default function GamePage() {
@@ -89,12 +90,12 @@ export default function GamePage() {
     scores.forEach((score, i) => {
         const date = new Date(score.date);
         scoresHtml.push(
-            <Link to={`./scores/${score.id}`} state={{score: score, game: game}} className="flex flex-row w-full py-2 space-x-2" key={i}>
-                <div className="flex flex-col text-center text-xl bg-gray-600 bg-opacity-40 rounded-3xl p-4 w-20">
+            <Link to={`./scores/${score.id}`} state={{score: score, game: game}} className="flex flex-row w-full my-2 space-x-4 bg-gray-600 bg-opacity-20 rounded-3xl hover:shadow-lg transition-shadow" key={i}>
+                <div className="flex flex-col items-center justify-center text-center text-xl bg-gray-600 bg-opacity-30 rounded-3xl py-4 w-20">
                     <p>🏆</p>
                     <p className="text-lg">{score.winner}</p>
                 </div>
-                <div className="flex flex-col justify-center items-center">
+                <div className="flex flex-col justify-center items-center ">
                     <p className="">{score.participants.length} spelers</p>
                     <p className="">{date.toLocaleDateString('nl')}</p>
                     <p className="text-sm text-left">{date.toLocaleTimeString('nl', {hour: "numeric", minute: "numeric", second:undefined})}</p>
@@ -114,15 +115,15 @@ export default function GamePage() {
                     <p className="text-xl">{game.name}</p>
                 </div>
             </div>
-            <div className="flex flex-row justify-between items-center w-full mb-4 space-x-4">
-                <Link to={"./../../"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 w-full text-center">
-                    Terug
+            <div className="flex flex-row items-center mb-4 space-x-4">
+                <Link to={"./../../"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                    <IoMdArrowBack size={20}/>
                 </Link>
-                <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 w-full text-center">
-                    Bewerken
+                <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                    <IoMdCreate size={20}/>
                 </Link>
-                <Link to={"/add"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 w-full text-center">
-                    Toevoegen
+                <Link to={"/add"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                    <IoMdAdd size={20}/>
                 </Link>
             </div>
             {scores.length === 0 ? 
@@ -130,7 +131,7 @@ export default function GamePage() {
             : 
             <div className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
                 <p className="">Vorige uitslagen:</p>
-                <div className="flex flex-col items-center justify-start">
+                <div className="flex flex-col items-center justify-start mt-2">
                 {scoresHtml}
                 </div>
             </div>

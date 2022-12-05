@@ -5,8 +5,8 @@ export default function Layout() {
   return (
     <div className="min-h-screen flex flex-col justify-between font-mono px-6 bg-[#292C33] text-[#DBE2E9]">
       <div className="flex flex-col mb-4">
-        <div className="sticky top-0 rounded-b-3xl backdrop-blur-sm">
-          <div className="bg-gray-700 rounded-3xl w-full p-4 mt-4 bg-opacity-80 ">
+        <div className="sticky top-0 ">
+          <div className="bg-gray-700 rounded-3xl backdrop-blur-sm w-full p-4 mt-4 bg-opacity-80 ">
             <Link to={"/"} className=" text-3xl">Bordspellen App</Link>
             <p className="font-semibold">Dawn en Jop</p>
           </div>
