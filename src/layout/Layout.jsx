@@ -3,13 +3,13 @@ import { Link, Outlet } from "react-router-dom";
 
 export default function Layout() {
   return (
-    <div className="min-h-screen font-mono p-6">
+    <div className="min-h-screen font-mono p-6 bg-[#292C33] text-[#DBE2E9]">
       <div className="flex flex-col items-start">
         <div className="flex flex-row w-full justify-between mb-2">
-          <Link to={"/"} className="p-2 border rounded-md">
+          <Link to={"/"} className="p-2 border border-[#DBE2E9] rounded-md">
             <AiOutlineHome size={20} />
           </Link>
-          <Link to={"/profile"} className="p-2 border rounded-md">
+          <Link to={"/profile"} className="p-2 border border-[#DBE2E9] rounded-md">
             <AiOutlineUser size={20} />
           </Link>
         </div>
