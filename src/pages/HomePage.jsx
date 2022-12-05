@@ -14,7 +14,7 @@ export default function HomePage() {
                 querySnapshot.docs.map(item => ({
                     id: item.id,
                     name: item.data()["name"],
-                    shortName: item.data()["shortName"]
+                    shortName: item.data()["shortName"],
                 }))
             );
         });
@@ -35,6 +35,7 @@ export default function HomePage() {
                             <p className="text-3xl p-4 bg-gray-600 bg-opacity-50 rounded-3xl">{game.shortName}</p>
                         </div>
                         <p className="text-white font-normal text-center">{game.name}</p>
+                        {/* <p className="text-white font-normal text-center">{game.scoreCount}</p> */}
                     </Link>
                 );
             })}

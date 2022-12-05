@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../Firebase";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 
 export default function GamePage() {
@@ -33,10 +34,10 @@ export default function GamePage() {
                                 id: score.id,
                                 winner: score.data()["winner"],
                                 participants: score.data()["participants"],
-                                date: score.data()["date"].seconds * 1000,
+                                date: new Date(score.data()["date"].seconds * 1000),
                             }));
             setScores(scores.sort(function(a, b) {
-                return new Date(b.date) - new Date(a.date);
+                return b.date - a.date;
             }));
         });
     }
@@ -59,8 +60,26 @@ export default function GamePage() {
     if (loading) {
         return (
             <div className="flex flex-col bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white rounded-3xl p-4">
-                <p className="text-xl text-center w-full">Laden...</p>
+            <div className="flex flex-row w-full items-center mb-4">
+                <p className="text-3xl p-4 bg-gray-600 bg-opacity-50 rounded-3xl mr-4">
+                    <AiOutlineLoading3Quarters className="animate-spin"/>
+                </p>
+                <p className="text-xl text-center w-full">
+                    <AiOutlineLoading3Quarters className="animate-spin"/>
+                </p>
             </div>
+            <div className="flex flex-row justify-between items-center w-full mb-4 space-x-4">
+                <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 w-full text-center">
+                    Bewerken
+                </Link>
+                <Link to={"/add"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 w-full text-center">
+                    Toevoegen
+                </Link>
+            </div>
+            <p className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
+                <AiOutlineLoading3Quarters className="animate-spin"/>
+            </p>
+        </div>
         )
     }
 
@@ -69,16 +88,17 @@ export default function GamePage() {
     scores.forEach((score, i) => {
         const date = new Date(score.date);
         scoresHtml.push(
-            <div className="flex flex-row w-full py-2 space-x-2" key={i}>
+            <Link to={`./scores/${score.id}`} state={{score: score, game: game}} className="flex flex-row w-full py-2 space-x-2" key={i}>
                 <div className="flex flex-col text-center text-xl bg-gray-600 bg-opacity-40 rounded-3xl p-4 w-20">
                     <p>🏆</p>
                     <p className="text-lg">{score.winner}</p>
                 </div>
                 <div className="flex flex-col justify-center items-center">
-                    <p className="text-lg">{date.toLocaleDateString('nl')}</p>
-                    <p className="text-sm">{date.toLocaleTimeString('nl')}</p>
+                    <p className="">{score.participants.length} spelers</p>
+                    <p className="">{date.toLocaleDateString('nl')}</p>
+                    <p className="text-sm text-left">{date.toLocaleTimeString('nl', {hour: "numeric", minute: "numeric", second:undefined})}</p>
                 </div>
-            </div>
+            </Link>
         )
     })
 
@@ -88,6 +108,14 @@ export default function GamePage() {
             <div className="flex flex-row w-full items-center mb-4">
                 <p className="text-3xl p-4 bg-gray-600 bg-opacity-50 rounded-3xl">{game.shortName}</p>
                 <p className="text-xl text-center w-full">{game.name}</p>
+            </div>
+            <div className="flex flex-row justify-between items-center w-full mb-4 space-x-4">
+                <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 w-full text-center">
+                    Bewerken
+                </Link>
+                <Link to={"/add"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 w-full text-center">
+                    Toevoegen
+                </Link>
             </div>
             {scores.length === 0 ? 
             <p className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">Nog geen scores gevonden</p> 
