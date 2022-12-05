@@ -26,16 +26,16 @@ export default function HomePage() {
 
     return (
         <div className="flex flex-col w-full">
-            <p className="mb-2 text-lg ml-2">{games.length} spelletjes</p>
-            <div className="grid grid-cols-3 md:grid-cols-6 place-items-center">
+            <p className="mb-2">{games.length} games</p>
+            <div className="grid grid-cols-2 md:grid-cols-6 place-items-center gap-4">
             {games.map((game, i) => {
                 return (
-                    <div className="p-2 w-full">
-                    <Link to={`games/${game.id}`} key={i} className="flex flex-col items-center justify-center text-center w-full h-32 rounded bg-contain bg-no-repeat bg-center bg-red-900 hover:bg-red-700 hover:scale-105 transition-all" style={{backgroundImage: `url(${game.image})`}}>
-                        <p className="text-3xl">{game.shortName}</p>
-                        <p>{game.name}</p>
+                    <Link to={`games/${game.id}`} key={i} className="flex flex-col justify-between bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 w-full h-48 rounded-3xl p-4">
+                        <div className="flex flex-row">
+                            <p className="text-3xl p-4 bg-gray-600 bg-opacity-50 rounded-3xl">{game.shortName}</p>
+                        </div>
+                        <p className="text-white font-normal text-center">{game.name}</p>
                     </Link>
-                    </div>
                 );
             })}
         </div>

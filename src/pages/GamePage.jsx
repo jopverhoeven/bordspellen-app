@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../Firebase";
 
@@ -46,15 +46,20 @@ export default function GamePage() {
     }, [])
 
     if (error) {
-        return <div>Spel met id '{gameId}' bestaat niet 😔</div>
+        return <div className="flex flex-col bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white rounded-3xl p-4">
+        <p className="text-xl text-center w-full mb-4">Er is iets fout gegaan</p>
+        <div className="mb-4">
+            <Link to={"/"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
+                Terug
+            </Link>
+        </div>
+    </div>
     }
 
     if (loading) {
         return (
-            <div className="flex flex-col p-2">
-                <div className="flex flex-col w-full bg-red-900 rounded p-2">
-                    <p className="text-center font-bold">Laden...</p>
-                </div>
+            <div className="flex flex-col bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white rounded-3xl p-4">
+                <p className="text-xl text-center w-full">Laden...</p>
             </div>
         )
     }
@@ -64,13 +69,14 @@ export default function GamePage() {
     scores.forEach((score, i) => {
         const date = new Date(score.date);
         scoresHtml.push(
-            <div className="w-full p-2">
-                <div key={i} className="flex flex-col items-center justify-center text-center w-full h-32 rounded bg-contain bg-no-repeat bg-center bg-red-900 hover:bg-red-700 hover:scale-105 transition-all">
-                    <p className="text-center text-xl font-bold">🏆 {score.winner}</p>
-                    <div className="text-center">
-                        <p className="text-lg ">{date.toLocaleDateString('nl')}</p>
-                        <p className="text-sm">{date.toLocaleTimeString('nl')}</p>
-                    </div>
+            <div className="flex flex-row w-full py-2 space-x-2" key={i}>
+                <div className="flex flex-col text-center text-xl bg-gray-600 bg-opacity-40 rounded-3xl p-4 w-20">
+                    <p>🏆</p>
+                    <p className="text-lg">{score.winner}</p>
+                </div>
+                <div className="flex flex-col justify-center items-center">
+                    <p className="text-lg">{date.toLocaleDateString('nl')}</p>
+                    <p className="text-sm">{date.toLocaleTimeString('nl')}</p>
                 </div>
             </div>
         )
@@ -78,19 +84,20 @@ export default function GamePage() {
 
 
     return (
-        <div className="flex flex-col p-2">
-            <div className="flex flex-col w-full bg-red-900 rounded p-2">
-                <p className="text-xl text-center font-bold">{game.shortName} {game.name}</p>
+        <div className="flex flex-col bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white rounded-3xl p-4">
+            <div className="flex flex-row w-full items-center mb-4">
+                <p className="text-3xl p-4 bg-gray-600 bg-opacity-50 rounded-3xl">{game.shortName}</p>
+                <p className="text-xl text-center w-full">{game.name}</p>
             </div>
-                {scores.length === 0 ? 
-                <p>Nog geen scores gevonden</p> 
-                : 
-                <div>
-                    <p className="">Vorige uitslagen:</p>
-                    <div className="grid grid-cols-3 md:grid-cols-6 place-items-center">
-                    {scoresHtml}
-                    </div>
+            {scores.length === 0 ? 
+            <p className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">Nog geen scores gevonden</p> 
+            : 
+            <div className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
+                <p className="">Vorige uitslagen:</p>
+                <div className="flex flex-col items-center justify-start">
+                {scoresHtml}
                 </div>
+            </div>
             }
         </div>
     )
