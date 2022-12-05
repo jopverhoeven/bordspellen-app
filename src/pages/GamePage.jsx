@@ -106,11 +106,11 @@ export default function GamePage() {
 
     return (
         <div className="flex flex-col bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white rounded-3xl p-4">
-             <div className="flex flex-row w-full space-x-4">
-                <div className="flex flex-row items-center mb-4">
+             <div className="flex flex-row w-full space-x-4  mb-4">
+                <div className="flex flex-row items-center justify-center">
                     <p className="text-3xl p-4 bg-gray-600 bg-opacity-50 rounded-3xl">{game.shortName}</p>
                 </div>
-                <div className="flex flex-col justify-start">
+                <div className="flex flex-col items-center justify-center">
                     <p className="text-xl">{game.name}</p>
                 </div>
             </div>
