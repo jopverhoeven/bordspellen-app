@@ -115,6 +115,9 @@ export default function GamePage() {
                 </div>
             </div>
             <div className="flex flex-row justify-between items-center w-full mb-4 space-x-4">
+                <Link to={"./../../"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 w-full text-center">
+                    Terug
+                </Link>
                 <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 w-full text-center">
                     Bewerken
                 </Link>
