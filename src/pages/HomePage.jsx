@@ -15,6 +15,7 @@ export default function HomePage() {
                     id: item.id,
                     name: item.data()["name"],
                     shortName: item.data()["shortName"],
+                    scoreType: item.data()["scoreType"],
                 }))
             );
         });
@@ -39,7 +40,7 @@ export default function HomePage() {
                     </Link>
                 );
             })}
-        </div>
+            </div>
         </div>
         
     );

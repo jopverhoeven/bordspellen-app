@@ -21,7 +21,8 @@ export default function GamePage() {
             setGame({
                 id: doc.id,
                 name: data["name"],
-                shortName: data["shortName"]
+                shortName: data["shortName"],
+                scoreType: data["scoreType"]
             })
             if (loading) setLoading(false);
             fetchScores();
@@ -105,9 +106,13 @@ export default function GamePage() {
 
     return (
         <div className="flex flex-col bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white rounded-3xl p-4">
-            <div className="flex flex-row w-full items-center mb-4">
-                <p className="text-3xl p-4 bg-gray-600 bg-opacity-50 rounded-3xl">{game.shortName}</p>
-                <p className="text-xl text-center w-full">{game.name}</p>
+             <div className="flex flex-row w-full space-x-4">
+                <div className="flex flex-row items-center mb-4">
+                    <p className="text-3xl p-4 bg-gray-600 bg-opacity-50 rounded-3xl">{game.shortName}</p>
+                </div>
+                <div className="flex flex-col justify-start">
+                    <p className="text-xl">{game.name}</p>
+                </div>
             </div>
             <div className="flex flex-row justify-between items-center w-full mb-4 space-x-4">
                 <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 w-full text-center">
