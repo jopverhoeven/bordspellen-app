@@ -39,7 +39,7 @@ export default function HomePage() {
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-10 place-items-center gap-4">
             {games.map((game, i) => {
                 return (
-                    <Link to={`games/${game.id}`} state={game} key={i} className="flex flex-col justify-between bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 w-full h-36 md:h-40 xl:h-52 rounded-3xl p-4">
+                    <Link to={`games/${game.id}`} state={game} key={i} className="flex flex-col justify-between bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 w-full h-40 xl:h-52 rounded-3xl p-4">
                         <div className="flex flex-row w-full">
                             <p className="text-3xl p-4 bg-gray-700 bg-opacity-40 rounded-3xl">{game.shortName}</p>
                         </div>
