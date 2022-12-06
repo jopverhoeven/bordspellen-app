@@ -1,15 +1,14 @@
 import { React } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { IoMdArrowBack, IoMdCreate } from "react-icons/io";
+import { IoMdArrowBack, IoMdCreate, IoMdTrash } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../Firebase";
+import ErrorPage from "./ErrorPage";
 
 function ScorePage() {
-
     const state = useLocation().state;
-
     const {gameId, scoreId} = useParams();
     const [game, setGame] = useState(state != null ? state.game : null);
     const [score, setScore] = useState(state != null ? state.score : null);
@@ -19,7 +18,7 @@ function ScorePage() {
     const fetchGame = async () => {
         onSnapshot(doc(db, "games", gameId), (doc) => {
             if (!doc.exists()) {
-                setError(true);
+                setError({status: "404", statusText: `Spel met id '${gameId}' niet gevonden`});
                 return;
             }
             const data = doc.data();
@@ -55,14 +54,7 @@ function ScorePage() {
     }, [])
 
     if (error) {
-        return <div className="flex flex-col bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white rounded-3xl p-4">
-            <p className="text-xl text-center w-full mb-4">Er is iets fout gegaan</p>
-            <div className="mb-4">
-                <Link to={"./../../"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
-                    Terug
-                </Link>
-            </div>
-        </div>
+        return <ErrorPage status={error.status} statusText={error.statusText}/>
     }
 
     if (loading) {
@@ -81,11 +73,14 @@ function ScorePage() {
                 </div>
             </div>
             <div className="flex flex-row items-center w-full mb-4 space-x-4">
-                <Link to={"./../../"} state={game} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                <Link to={"./../../"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
                     <AiOutlineLoading3Quarters className="animate-spin" />
                 </Link>
-                <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                <Link to={"./edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
                     <AiOutlineLoading3Quarters className="animate-spin" />
+                </Link>
+                <Link to={"./delete"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                    <AiOutlineLoading3Quarters size={20}/>
                 </Link>
             </div>
             <div className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
@@ -99,12 +94,12 @@ function ScorePage() {
     score.participants.forEach((participant, i) => {
         participantsHtml.push(
             <div className="flex flex-row w-full space-x-4 bg-gray-600 bg-opacity-20 rounded-3xl" key={i}>
-                <div className="flex flex-col items-center justify-center text-center text-xl bg-gray-600 bg-opacity-40 rounded-3xl p-4 w-20">
+                <div className="flex flex-col items-center justify-center text-center text-xl shadow-inner border-r border-r-gray-600 border-opacity-30 rounded-3xl p-4 min-w-[5rem] w-20">
                     { i === 0 ? <p>🏆</p> : <p>{i + 1}</p>}
                 </div>
                 <div className="flex flex-col justify-center items-start py-4">
                     <p className="text-lg">{participant.name}</p>
-                    <p className="">{game.scoreType + ": " + participant.score}</p>
+                    <p className="text-sm break-words">{game.scoreType + ": " + participant.score}</p>
                 </div>
             </div>
         )
@@ -124,8 +119,11 @@ function ScorePage() {
                 <Link to={"./../../"} state={game} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
                     <IoMdArrowBack size={20}/>
                 </Link>
-                <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                <Link to={"./edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
                     <IoMdCreate size={20}/>
+                </Link>
+                <Link to={"./delete"} state={{game: game, score: score}} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                    <IoMdTrash size={20} />
                 </Link>
             </div>
             <div className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">

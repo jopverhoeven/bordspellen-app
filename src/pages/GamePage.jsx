@@ -4,7 +4,8 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../Firebase";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { IoMdAdd, IoMdArrowBack, IoMdCreate } from "react-icons/io";
+import { IoMdAdd, IoMdArrowBack, IoMdCreate, IoMdTrash } from "react-icons/io";
+import ErrorPage from "./ErrorPage";
 
 
 export default function GamePage() {
@@ -17,7 +18,8 @@ export default function GamePage() {
     const fetchGame = async () => {
         onSnapshot(doc(db, "games", gameId), (doc) => {
             if (!doc.exists()) {
-                setError(true);
+                setError({status: "404", statusText: `Spel met id '${gameId}' niet gevonden`});
+                return;
             }
             const data = doc.data();
             setGame({
@@ -51,14 +53,7 @@ export default function GamePage() {
     }, [])
 
     if (error) {
-        return <div className="flex flex-col bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white rounded-3xl p-4">
-            <p className="text-xl text-center w-full mb-4">Er is iets fout gegaan</p>
-            <div className="mb-4">
-                <Link to={"./../../"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
-                    <IoMdArrowBack size={20} />
-                </Link>
-            </div>
-        </div>
+        return <ErrorPage status={error.status} statusText={error.statusText}/>
     }
 
     if (loading && game) {
@@ -76,11 +71,14 @@ export default function GamePage() {
                     <Link to={"./../../"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
                         <IoMdArrowBack size={20} />
                     </Link>
-                    <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                    <Link to={"./edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
                         <IoMdCreate size={20} />
                     </Link>
-                    <Link to={"/add"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                    <Link to={"./add"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
                         <IoMdAdd size={20} />
+                    </Link>
+                    <Link to={"./delete"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                        <IoMdTrash size={20} />
                     </Link>
                 </div>
                 <p className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
@@ -105,13 +103,16 @@ export default function GamePage() {
                 </div>
                 <div className="flex flex-row items-center mb-4 space-x-4">
                     <Link to={"./../../"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
-                        <AiOutlineLoading3Quarters className="animate-spin" />
+                        <IoMdArrowBack size={20} />
                     </Link>
-                    <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
-                        <AiOutlineLoading3Quarters className="animate-spin" />
+                    <Link to={"./edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                        <IoMdCreate size={20} />
                     </Link>
-                    <Link to={"/add"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
-                        <AiOutlineLoading3Quarters className="animate-spin" />
+                    <Link to={"./add"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                        <IoMdAdd size={20} />
+                    </Link>
+                    <Link to={"./delete"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                        <IoMdTrash size={20} />
                     </Link>
                 </div>
                 <p className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
@@ -127,14 +128,14 @@ export default function GamePage() {
         const date = new Date(score.date);
         scoresHtml.push(
             <Link to={`./scores/${score.id}`} state={{ score: score, game: game }} className="flex flex-row w-full my-2 space-x-4 bg-gray-600 bg-opacity-20 rounded-3xl hover:shadow-lg transition-shadow" key={i}>
-                <div className="flex flex-col items-center justify-center text-center text-xl bg-gray-600 bg-opacity-30 rounded-3xl py-4 w-20">
+                <div className="flex flex-col items-center justify-center text-center text-xl shadow-inner border-r border-r-gray-600 border-opacity-30 rounded-3xl py-4 w-20">
                     <p>🏆</p>
                     <p className="text-lg">{score.winner}</p>
                 </div>
-                <div className="flex flex-col justify-center items-center ">
+                <div className="flex flex-col justify-center items-start ">
                     <p className="">{score.participants.length} spelers</p>
-                    <p className="">{date.toLocaleDateString('nl')}</p>
-                    <p className="text-sm text-left">{date.toLocaleTimeString('nl', { hour: "numeric", minute: "numeric", second: undefined })}</p>
+                    <p className="text-sm text-gray-300">{date.toLocaleDateString('nl')} {date.toLocaleTimeString('nl', { hour: "numeric", minute: "numeric", second: undefined })}</p>
+                    <p className="text-sm text-left"></p>
                 </div>
             </Link>
         )
@@ -155,11 +156,14 @@ export default function GamePage() {
                 <Link to={"./../../"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
                     <IoMdArrowBack size={20} />
                 </Link>
-                <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                <Link to={"./edit"} state={game} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
                     <IoMdCreate size={20} />
                 </Link>
-                <Link to={"/add"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                <Link to={"./add"} state={game} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
                     <IoMdAdd size={20} />
+                </Link>
+                <Link to={"./delete"} state={game} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                    <IoMdTrash size={20} />
                 </Link>
             </div>
             {scores.length === 0 ?
