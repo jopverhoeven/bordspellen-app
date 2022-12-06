@@ -36,7 +36,7 @@ export default function HomePage() {
                     <IoMdAdd size={20}/>
                 </Link>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 place-items-center gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-10 place-items-center gap-4">
             {games.map((game, i) => {
                 return (
                     <Link to={`games/${game.id}`} key={i} className="flex flex-col justify-between bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 w-full h-48 rounded-3xl p-4">
