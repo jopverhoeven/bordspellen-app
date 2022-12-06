@@ -1,5 +1,6 @@
+import { React } from "react";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../Firebase";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -10,8 +11,8 @@ export default function GamePage() {
     const { gameId } = useParams();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-    const [game, setGame] = useState();
     const [scores, setScores] = useState([]);
+    const [game, setGame] = useState(useLocation().state);
 
     const fetchGame = async () => {
         onSnapshot(doc(db, "games", gameId), (doc) => {
@@ -29,59 +30,94 @@ export default function GamePage() {
             fetchScores();
         });
     }
-    
+
     const fetchScores = async () => {
         onSnapshot(collection(db, `games/${gameId}/scores`), (collection) => {
             const scores = collection.docs.map(score => ({
-                                id: score.id,
-                                winner: score.data()["winner"],
-                                participants: score.data()["participants"],
-                                date: new Date(score.data()["date"].seconds * 1000),
-                            }));
-            setScores(scores.sort(function(a, b) {
+                id: score.id,
+                winner: score.data()["winner"],
+                participants: score.data()["participants"],
+                date: new Date(score.data()["date"].seconds * 1000),
+            }));
+            setScores(scores.sort(function (a, b) {
                 return b.date - a.date;
             }));
+            if (loading) setLoading(false);
         });
     }
-    
+
     useEffect(() => {
         fetchGame();
     }, [])
 
     if (error) {
         return <div className="flex flex-col bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white rounded-3xl p-4">
-        <p className="text-xl text-center w-full mb-4">Er is iets fout gegaan</p>
-        <div className="mb-4">
-            <Link to={"/"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
-                Terug
-            </Link>
+            <p className="text-xl text-center w-full mb-4">Er is iets fout gegaan</p>
+            <div className="mb-4">
+                <Link to={"./../../"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                    <IoMdArrowBack size={20} />
+                </Link>
+            </div>
         </div>
-    </div>
     }
 
-    if (loading) {
+    if (loading && game) {
         return (
             <div className="flex flex-col bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white rounded-3xl p-4">
-            <div className="flex flex-row w-full items-center mb-4">
-                <p className="text-3xl p-4 bg-gray-600 bg-opacity-50 rounded-3xl mr-4">
-                    <AiOutlineLoading3Quarters className="animate-spin"/>
-                </p>
-                <p className="text-xl text-center w-full">
-                    <AiOutlineLoading3Quarters className="animate-spin"/>
+                <div className="flex flex-row w-full space-x-4  mb-4">
+                    <div className="flex flex-row items-center justify-center">
+                        <p className="text-3xl p-4 bg-gray-600 bg-opacity-50 rounded-3xl">{game.shortName}</p>
+                    </div>
+                    <div className="flex flex-col items-center justify-center">
+                        <p className="text-xl">{game.name}</p>
+                    </div>
+                </div>
+                <div className="flex flex-row items-center mb-4 space-x-4">
+                    <Link to={"./../../"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                        <IoMdArrowBack size={20} />
+                    </Link>
+                    <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                        <IoMdCreate size={20} />
+                    </Link>
+                    <Link to={"/add"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                        <IoMdAdd size={20} />
+                    </Link>
+                </div>
+                <p className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
+                    <AiOutlineLoading3Quarters className="animate-spin" />
                 </p>
             </div>
-            <div className="flex flex-row justify-between items-center w-full mb-4 space-x-4">
-                <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 w-full text-center">
-                    Bewerken
-                </Link>
-                <Link to={"/add"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 w-full text-center">
-                    Toevoegen
-                </Link>
+        )
+    }
+
+    if (loading && game == null) {
+        return (
+            <div className="flex flex-col bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white rounded-3xl p-4">
+                <div className="flex flex-row w-full space-x-4  mb-4">
+                    <div className="flex flex-row items-center justify-center">
+                        <p className="text-3xl p-4 bg-gray-600 bg-opacity-50 rounded-3xl">
+                            <AiOutlineLoading3Quarters className="animate-spin" />
+                        </p>
+                    </div>
+                    <div className="flex flex-col items-center justify-center">
+                        <AiOutlineLoading3Quarters className="animate-spin" />
+                    </div>
+                </div>
+                <div className="flex flex-row items-center mb-4 space-x-4">
+                    <Link to={"./../../"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                        <AiOutlineLoading3Quarters className="animate-spin" />
+                    </Link>
+                    <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                        <AiOutlineLoading3Quarters className="animate-spin" />
+                    </Link>
+                    <Link to={"/add"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
+                        <AiOutlineLoading3Quarters className="animate-spin" />
+                    </Link>
+                </div>
+                <p className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
+                    <AiOutlineLoading3Quarters className="animate-spin" />
+                </p>
             </div>
-            <p className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
-                <AiOutlineLoading3Quarters className="animate-spin"/>
-            </p>
-        </div>
         )
     }
 
@@ -90,7 +126,7 @@ export default function GamePage() {
     scores.forEach((score, i) => {
         const date = new Date(score.date);
         scoresHtml.push(
-            <Link to={`./scores/${score.id}`} state={{score: score, game: game}} className="flex flex-row w-full my-2 space-x-4 bg-gray-600 bg-opacity-20 rounded-3xl hover:shadow-lg transition-shadow" key={i}>
+            <Link to={`./scores/${score.id}`} state={{ score: score, game: game }} className="flex flex-row w-full my-2 space-x-4 bg-gray-600 bg-opacity-20 rounded-3xl hover:shadow-lg transition-shadow" key={i}>
                 <div className="flex flex-col items-center justify-center text-center text-xl bg-gray-600 bg-opacity-30 rounded-3xl py-4 w-20">
                     <p>🏆</p>
                     <p className="text-lg">{score.winner}</p>
@@ -98,7 +134,7 @@ export default function GamePage() {
                 <div className="flex flex-col justify-center items-center ">
                     <p className="">{score.participants.length} spelers</p>
                     <p className="">{date.toLocaleDateString('nl')}</p>
-                    <p className="text-sm text-left">{date.toLocaleTimeString('nl', {hour: "numeric", minute: "numeric", second:undefined})}</p>
+                    <p className="text-sm text-left">{date.toLocaleTimeString('nl', { hour: "numeric", minute: "numeric", second: undefined })}</p>
                 </div>
             </Link>
         )
@@ -107,7 +143,7 @@ export default function GamePage() {
 
     return (
         <div className="flex flex-col bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white rounded-3xl p-4">
-             <div className="flex flex-row w-full space-x-4  mb-4">
+            <div className="flex flex-row w-full space-x-4  mb-4">
                 <div className="flex flex-row items-center justify-center">
                     <p className="text-3xl p-4 bg-gray-600 bg-opacity-50 rounded-3xl">{game.shortName}</p>
                 </div>
@@ -117,24 +153,24 @@ export default function GamePage() {
             </div>
             <div className="flex flex-row items-center mb-4 space-x-4">
                 <Link to={"./../../"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
-                    <IoMdArrowBack size={20}/>
+                    <IoMdArrowBack size={20} />
                 </Link>
                 <Link to={"/edit"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
-                    <IoMdCreate size={20}/>
+                    <IoMdCreate size={20} />
                 </Link>
                 <Link to={"/add"} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
-                    <IoMdAdd size={20}/>
+                    <IoMdAdd size={20} />
                 </Link>
             </div>
-            {scores.length === 0 ? 
-            <p className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">Nog geen scores gevonden</p> 
-            : 
-            <div className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
-                <p className="">Vorige uitslagen:</p>
-                <div className="flex flex-col items-center justify-start mt-2">
-                {scoresHtml}
+            {scores.length === 0 ?
+                <p className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">Nog geen scores gevonden</p>
+                :
+                <div className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
+                    <p className="">Vorige uitslagen:</p>
+                    <div className="flex flex-col items-center justify-start mt-2">
+                        {scoresHtml}
+                    </div>
                 </div>
-            </div>
             }
         </div>
     )

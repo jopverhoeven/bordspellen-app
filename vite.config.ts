@@ -8,5 +8,8 @@ export default defineConfig({
   plugins: [react(), viteTsconfigPaths(), svgrPlugin()],
   build: {
     outDir: './build'
+  },
+  optimizeDeps: {
+    exclude: ['react-icons']
   }
 });
