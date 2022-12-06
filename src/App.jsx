@@ -1,10 +1,15 @@
+import { React } from 'react';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Layout from "./layout/Layout"; 
+import ProtectedRoute from './component/ProtectedRoute';
+import UnprotectedRoute from './component/UnprotectedRoute';
+import { AuthContextProvider } from './context/AuthContext';
+import Layout from "./layout/Layout";
 import GamePage from "./pages/GamePage";
 import HomePage from "./pages/HomePage";
+import LoginPage from './pages/LoginPage';
 import ProfilePage from "./pages/ProfilePage";
 import ScorePage from "./pages/ScorePage";
 
@@ -15,27 +20,48 @@ function App() {
       element: <Layout />,
       children: [
         {
+          path: "/login",
+          element:
+            <UnprotectedRoute>
+              <LoginPage />
+            </UnprotectedRoute>
+        },
+        {
           path: "/",
-          element: <HomePage />
+          element:
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
         },
         {
           path: "/profile",
-          element: <ProfilePage />
+          element:
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
         },
         {
           path: "/games/:gameId",
-          element: <GamePage />
+          element:
+            <ProtectedRoute>
+              <GamePage />
+            </ProtectedRoute>
         },
         {
           path: "/games/:gameId/scores/:scoreId",
-          element: <ScorePage />
+          element:
+            <ProtectedRoute>
+              <ScorePage />
+            </ProtectedRoute>
         }
       ],
     },
   ]);
 
   return (
-    <RouterProvider router={router} />
+    <AuthContextProvider>
+      <RouterProvider router={router} />
+    </AuthContextProvider>
   );
 }
 

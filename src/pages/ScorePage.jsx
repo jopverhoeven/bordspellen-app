@@ -34,7 +34,6 @@ function ScorePage() {
     }
 
     const fetchScore = async (docId) => {
-        console.log(docId);
         onSnapshot(doc(db, "games/"+docId+"/scores", scoreId), (doc) => {
             if (!doc.exists()) {
                 setError(true);
