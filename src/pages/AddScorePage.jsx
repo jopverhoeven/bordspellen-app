@@ -25,7 +25,7 @@ function AddScorePage() {
     const fetchGame = async () => {
         onSnapshot(doc(db, "games", gameId), (doc) => {
             if (!doc.exists()) {
-                setError({status: "404", statusText: `Spel met id '${gameId}' niet gevonden`});
+                setError({ status: "404", statusText: `Spel met id '${gameId}' niet gevonden` });
                 return;
             }
             const data = doc.data();
@@ -44,7 +44,7 @@ function AddScorePage() {
     }, [])
 
     if (error) {
-        return <ErrorPage status={error.status} statusText={error.statusText}/>
+        return <ErrorPage status={error.status} statusText={error.statusText} />
     }
 
     if (loading && game == null) {
@@ -73,14 +73,14 @@ function AddScorePage() {
         const participants = score.participants;
         participants[key].name = participantName;
 
-        setScore({...score, participants: participants});
+        setScore({ ...score, participants: participants });
     }
 
     function handleParticipantScore(participantScore, key) {
         const participants = score.participants;
         participants[key].score = participantScore;
 
-        setScore({...score, participants: participants});
+        setScore({ ...score, participants: participants });
     }
 
     function handleAddParticipant() {
@@ -102,7 +102,7 @@ function AddScorePage() {
         const defScore = score;
         defScore.winner = score.participants[0].name;
         defScore.date = new Date();
-        await addDoc(collection(db, "games/"+game.id+"/scores"), defScore);
+        await addDoc(collection(db, "games/" + game.id + "/scores"), defScore);
         navigator("./../")
     }
 
@@ -134,7 +134,7 @@ function AddScorePage() {
                                 <div key={i} className="flex flex-col md:items-center space-y-2 md:space-y-0 md:flex-row md:space-x-2 w-full p-4 rounded-3xl bg-gray-600 bg-opacity-30">
                                     {i == 0 ? <p className="p-2 md:p-4 w-[56px] text-left md:text-center">🏆</p> : <p className="p-2 md:p-4 w-[56px] text-left md:text-center">{i + 1}</p>}
                                     <input className="rounded-3xl p-2 shadow-inner bg-gray-600 bg-opacity-0 border border-gray-600" placeholder="Naam" onChange={(e) => handleParticipantName(e.target.value, i)} />
-                                    <input className="rounded-3xl p-2 shadow-inner bg-gray-600 bg-opacity-0 border border-gray-600" placeholder={game.scoreType} onChange={(e) => handleParticipantScore(e.target.value, i)} />
+                                    {!game.scoreType || game.scoreType === "" ? null : <input className="rounded-3xl p-2 shadow-inner bg-gray-600 bg-opacity-0 border border-gray-600" placeholder={game.scoreType} onChange={(e) => handleParticipantScore(e.target.value, i)} />}
                                 </div>
                             )
                         })}

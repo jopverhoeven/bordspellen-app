@@ -26,7 +26,9 @@ function AddGamePage() {
     }
 
     async function handleNewGame() {
-        await addDoc(collection(db, "games"), game);
+        const defGame = game;
+        defGame.scoreType = defGame.scoreType.trim();
+        await addDoc(collection(db, "games"), defGame);
         navigator("./../../")
     }
 

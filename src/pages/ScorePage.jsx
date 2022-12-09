@@ -99,7 +99,7 @@ function ScorePage() {
                 </div>
                 <div className="flex flex-col justify-center items-start py-4">
                     <p className="text-lg">{participant.name}</p>
-                    <p className="text-sm break-words">{game.scoreType + ": " + participant.score}</p>
+                    {!game.scoreType || game.scoreType === "" ? null :<p className="text-sm break-words">{game.scoreType + ": " + participant.score}</p>}
                 </div>
             </div>
         )
