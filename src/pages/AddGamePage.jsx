@@ -4,32 +4,53 @@ import { Link, useNavigate } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../Firebase";
 import { IoMdArrowBack } from "react-icons/io";
+import { Game } from "../domain/Game";
+import { ZodError } from "zod";
 
 function AddGamePage() {
     const navigator = useNavigate();
-    const [game, setGame] = useState({
-        shortName: "",
-        name: "",
-        scoreType: ""
-    });
+    const [name, setName] = useState("");
+    const [shortName, setShortName] = useState("");
+    const [scoreType, setScoreType] = useState("");
+    const [formError, setFormError] = useState([]);
 
     function handleGameName(name) {
-        setGame({ ...game, name: name });
+        setName(name);
+        setFormError([]);
     }
 
     function handleGameShortName(shortName) {
-        setGame({ ...game, shortName: shortName });
+        setShortName(shortName);
+        setFormError([]);
     }
 
     function handleGameScoreType(scoreType) {
-        setGame({ ...game, scoreType: scoreType });
+        setScoreType(scoreType);
+        setFormError([]);
     }
 
     async function handleNewGame() {
-        const defGame = game;
-        defGame.scoreType = defGame.scoreType.trim();
-        await addDoc(collection(db, "games"), defGame);
-        navigator("./../../")
+        try {
+            const game = Game.parse({
+                name: name,
+                shortName: shortName,
+                scoreType: scoreType
+            });
+
+            await addDoc(collection(db, "games"), game);
+            navigator("./../../")
+        } catch (e) {
+            if (e instanceof ZodError) {
+                const newFormError = [];
+                e.errors.map(error => {
+                    newFormError.push({
+                        name: error.path[0],
+                        message: error.message
+                    })
+                });
+                setFormError(newFormError);
+            }
+        }
     }
 
     return (
@@ -42,17 +63,25 @@ function AddGamePage() {
             <div className="flex flex-col space-y-4 p-4 bg-gray-600 bg-opacity-50 rounded-3xl">
                 <p>Nieuw spel toevoegen</p>
                 <div className="flex flex-col w-full space-y-4">
-                    <div className="flex flex-col md:items-center space-y-2 md:space-y-0 md:flex-row md:space-x-2 w-full p-4 rounded-3xl bg-gray-600 bg-opacity-30">
-                        <p>Naam</p>
-                        <input className="rounded-3xl p-2 shadow-inner bg-gray-600 bg-opacity-0 border border-gray-600" placeholder="Naam" onChange={(e) => handleGameName(e.target.value)} />
+                    <div className="flex flex-col w-full p-4 rounded-3xl bg-gray-600 bg-opacity-30">
+                        <div className="flex flex-col md:items-center space-y-2 md:space-y-0 md:flex-row md:space-x-2 ">
+                            <p>Naam</p>
+                            <input className="rounded-3xl p-2 shadow-inner bg-gray-600 bg-opacity-0 border border-gray-600" placeholder="Naam" onChange={(e) => handleGameName(e.target.value)} />
+                        </div>
+                        {formError.find(error => error.name === "name") ? <p>⚡{formError.find(error => error.name === "name").message}⚡</p> : null}
                     </div>
-                    <div className="flex flex-col md:items-center space-y-2 md:space-y-0 md:flex-row md:space-x-2 w-full p-4 rounded-3xl bg-gray-600 bg-opacity-30">
-                        <p>Icoon</p>
-                        <input className="rounded-3xl p-2 shadow-inner bg-gray-600 bg-opacity-0 border border-gray-600" placeholder="Icoon" onChange={(e) => handleGameShortName(e.target.value)} />
+                    <div className="flex flex-col w-full p-4 rounded-3xl bg-gray-600 bg-opacity-30">
+                        <div className="flex flex-col md:items-center space-y-2 md:space-y-0 md:flex-row md:space-x-2 ">
+                            <p>Icoontje</p>
+                            <input className="rounded-3xl p-2 shadow-inner bg-gray-600 bg-opacity-0 border border-gray-600" placeholder="Icoontje" onChange={(e) => handleGameShortName(e.target.value)} />
+                        </div>
+                        {formError.find(error => error.name === "shortName") ? <p>⚡{formError.find(error => error.name === "shortName").message}⚡</p> : null}
                     </div>
-                    <div className="flex flex-col md:items-center space-y-2 md:space-y-0 md:flex-row md:space-x-2 w-full p-4 rounded-3xl bg-gray-600 bg-opacity-30">
-                        <p>Type score</p>
-                        <input className="rounded-3xl p-2 shadow-inner bg-gray-600 bg-opacity-0 border border-gray-600" placeholder="Type score" onChange={(e) => handleGameScoreType(e.target.value)} />
+                    <div className="flex flex-col w-full p-4 rounded-3xl bg-gray-600 bg-opacity-30">
+                        <div className="flex flex-col md:items-center space-y-2 md:space-y-0 md:flex-row md:space-x-2 ">
+                            <p>Type score</p>
+                            <input className="rounded-3xl p-2 shadow-inner bg-gray-600 bg-opacity-0 border border-gray-600" placeholder="Type score" onChange={(e) => handleGameScoreType(e.target.value)} />
+                        </div>
                     </div>
                     <button className="p-4 rounded-3xl bg-gray-600 bg-opacity-30" onClick={handleNewGame}>Toevoegen</button>
                 </div>
