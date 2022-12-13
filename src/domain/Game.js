@@ -1,7 +1,8 @@
 import { z } from "zod";
 
 export const Game = z.object({
+    id: z.string(),
     name: z.string().min(1, "Vul iets in."),
-    shortName: z.string().length(1, "Maximaal 1 emoji of letter."),
+    shortName: z.string().min(1, "Vul iets in."),
     scoreType: z.string().optional()
 });

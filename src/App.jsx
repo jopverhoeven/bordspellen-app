@@ -11,6 +11,7 @@ import AddGamePage from './pages/AddGamePage';
 import AddScorePage from './pages/AddScorePage';
 import DeleteGamePage from './pages/DeleteGamePage';
 import DeleteScorePage from './pages/DeleteScorePage';
+import EditGamePage from './pages/EditGamePage';
 import ErrorPage from './pages/ErrorPage';
 import GamePage from "./pages/GamePage";
 import HomePage from "./pages/HomePage";
@@ -22,7 +23,12 @@ function App() {
     {
       path: "/",
       element: <Layout />,
-      errorElement: <Layout><ErrorPage /></Layout>,
+      errorElement:
+        <Layout>
+          <ProtectedRoute>
+            <ErrorPage />
+          </ProtectedRoute>
+        </Layout>,
       children: [
         {
           path: "/login",
@@ -57,6 +63,13 @@ function App() {
           element:
             <ProtectedRoute>
               <AddScorePage />
+            </ProtectedRoute>
+        },
+        {
+          path: "/games/:gameId/edit",
+          element:
+            <ProtectedRoute>
+              <EditGamePage />
             </ProtectedRoute>
         },
         {
