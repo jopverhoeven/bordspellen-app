@@ -60,7 +60,7 @@ function DeleteGamePage() {
                 </Link>
             </div>
             <div className="flex flex-col justify-center items-start space-y-4">
-                <p>Weet je zeker dat je het spel <span className="p-2 bg-gray-600 bg-opacity-50 rounded-3xl w-fit inline-block">{game.name}</span> wilt verwijderen?</p>
+                <p>Weet je zeker dat je dit spel wilt verwijderen?</p>
                 <div className="flex flex-row justify-center space-x-4 w-full">
                     <button className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 w-full text-center" onClick={handleDeleteGame}>Ja</button>
                     <Link to={"./../"} state={game} className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 w-full text-center">Annuleren</Link>
