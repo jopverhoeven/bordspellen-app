@@ -2,9 +2,9 @@ import { React } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "../Firebase";
+import { db } from "../../Firebase";
 import { IoMdArrowBack } from "react-icons/io";
-import { Game } from "../domain/Game";
+import { Game } from "../../domain/Game";
 import { ZodError } from "zod";
 
 function AddGamePage() {
