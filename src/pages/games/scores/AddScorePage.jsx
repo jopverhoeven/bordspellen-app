@@ -59,7 +59,7 @@ function AddScorePage() {
         <>
             <NavigationComponent back="./../" hideAll={true} />
             <div className="flex flex-col space-y-4 w-full bg-gray-600 bg-opacity-50 text-white rounded-3xl p-4">
-                <p className="text-lg text-center">Nieuwe uitslag toevoegen</p>
+                <p className="">Nieuwe uitslag toevoegen</p>
                 <div className="flex flex-row items-center space-x-4 bg-gray-600 bg-opacity-30 rounded-3xl p-4">
                     <p>Deelnemers ({score.participants.length})</p>
                     <button className="p-2 bg-gray-600 bg-opacity-30 rounded-3xl" onClick={handleAddParticipant}><IoMdAdd /></button>

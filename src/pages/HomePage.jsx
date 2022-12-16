@@ -41,9 +41,14 @@ export default function HomePage() {
                     </Link>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-10 place-items-center gap-4">
-                    <div className="flex flex-col bg-gradient-to-br from-indigo-500 via-purple-500 w-full h-40 xl:h-52 to-pink-500 rounded-3xl p-4 justify-center items-center">
-                        <AiOutlineLoading3Quarters size={64} className="animate-spin" />
-                    </div>
+                    {Array.apply(null, { length: 10 }).map((e, i) => {
+                        return <div key={i} className="animate-pulse flex flex-col justify-between bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 w-full h-40 xl:h-52 rounded-3xl p-4">
+                            <div className="flex flex-row w-full">
+                                <div className="text-3xl p-4 bg-gray-700 bg-opacity-40 rounded-3xl w-16 h-16"></div>
+                            </div>
+                            <p className="text-white md:text-lg lg:text-xl text-center p-4 bg-gray-700 bg-opacity-40 rounded-3xl"></p>
+                        </div>
+                    })}
                 </div>
             </div>
         );

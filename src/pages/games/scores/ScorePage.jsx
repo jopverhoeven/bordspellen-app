@@ -23,8 +23,11 @@ function ScorePage() {
     return (
         <>
             <NavigationComponent back="./../../" hideAdd />
-            <div className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
-                <p>Gespeeld op {score.date.toLocaleDateString('nl')} {score.date.toLocaleTimeString('nl', { hour: "numeric", minute: "numeric", second: undefined })}</p>
+            <div className="flex flex-col space-y-4 bg-gray-600 bg-opacity-50 rounded-3xl p-4">
+                <div>
+                    <p className="text-lg">Uitslag</p>
+                    <p className="text-sm text-gray-300">Gespeeld op {score.date.toLocaleDateString('nl')} {score.date.toLocaleTimeString('nl', { hour: "numeric", minute: "numeric", second: undefined })}</p>
+                </div>
                 <p className="">Spelers:</p>
                 <div className="flex flex-col items-center justify-start space-y-4 mt-2">
                     {participantsHtml}
