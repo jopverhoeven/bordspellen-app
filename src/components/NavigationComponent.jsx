@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoMdAdd, IoMdArrowBack, IoMdCreate, IoMdTrash } from "react-icons/io";
 import { Link } from "react-router-dom";
 
@@ -16,7 +15,6 @@ function NavigationComponent(props) {
         return (
             <div className="flex flex-row items-center mb-4 space-x-4">
                 <div className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
-                    <AiOutlineLoading3Quarters className="animate-spin" size={20}/>
                 </div>
             </div>
         )

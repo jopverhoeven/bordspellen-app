@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../Firebase";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import ErrorPage from "../pages/ErrorPage";
 import NavigationComponent from "../components/NavigationComponent";
 
@@ -45,17 +44,15 @@ export default function GameLayout() {
                 <div className="flex flex-row w-full space-x-4  mb-4">
                     <div className="flex flex-row items-center justify-center">
                         <p className="text-3xl p-4 bg-gray-600 bg-opacity-50 rounded-3xl">
-                            <AiOutlineLoading3Quarters className="animate-spin" />
+                            
                         </p>
                     </div>
                     <div className="flex flex-col items-center justify-center">
-                        <AiOutlineLoading3Quarters className="animate-spin" />
                     </div>
                 </div>
                 <NavigationComponent loading />
 
                 <p className="bg-gray-600 bg-opacity-50 rounded-3xl p-4">
-                    <AiOutlineLoading3Quarters className="animate-spin" />
                 </p>
             </div>
         )
