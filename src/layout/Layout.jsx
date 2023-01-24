@@ -3,7 +3,7 @@ import { AiOutlineGithub } from "react-icons/ai";
 import { Link, Outlet } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
-export default function Layout() {
+export default function Layout({ children }) {
   return (
     <div className="min-h-screen flex flex-col justify-between font-mono px-6 bg-[#292C33] text-[#DBE2E9]">
       <div className="flex flex-col mb-4">
@@ -14,7 +14,7 @@ export default function Layout() {
           </div>
         </div>
         <div className="mt-4">
-          <Outlet />
+          {children ?? <Outlet />}
         </div>
       </div>
       <div className="flex flex-row justify-between items-center bg-gray-700 bg-opacity-80 rounded-3xl p-4 mb-4">

@@ -66,16 +66,14 @@ function AddGamePage() {
                     <div className="flex flex-col w-full p-4 rounded-3xl bg-gray-600 bg-opacity-30">
                         <div className="flex flex-col md:items-center space-y-2 md:space-y-0 md:flex-row md:space-x-2 ">
                             <p>Naam</p>
-                            <input className="rounded-3xl p-2 shadow-inner bg-gray-600 bg-opacity-0 border border-gray-600" placeholder="Naam" onChange={(e) => handleGameName(e.target.value)} />
+                            <input className={`rounded-3xl p-2 shadow-inner border ${formError.find(error => error.name === "name") ? "bg-red-500 border-red-500 bg-opacity-30" : "bg-transparent border-gray-600"}`} placeholder="Naam" onChange={(e) => handleGameName(e.target.value)} />
                         </div>
-                        {formError.find(error => error.name === "name") ? <p>⚡{formError.find(error => error.name === "name").message}⚡</p> : null}
                     </div>
-                    <div className="flex flex-col w-full p-4 rounded-3xl bg-gray-600 bg-opacity-30">
+                    <div className="flex flex-col w-full p-4 rounded-3xl bg-gray-600 bg-opacity-30 ">
                         <div className="flex flex-col md:items-center space-y-2 md:space-y-0 md:flex-row md:space-x-2 ">
                             <p>Icoontje</p>
-                            <input className="rounded-3xl p-2 shadow-inner bg-gray-600 bg-opacity-0 border border-gray-600" placeholder="Icoontje" onChange={(e) => handleGameShortName(e.target.value)} />
+                            <input className={`rounded-3xl p-2 shadow-inner border ${formError.find(error => error.name === "shortName") ? "bg-red-500 border-red-500 bg-opacity-30" : "bg-transparent border-gray-600"}`} placeholder="Icoontje" onChange={(e) => handleGameShortName(e.target.value)} />
                         </div>
-                        {formError.find(error => error.name === "shortName") ? <p>⚡{formError.find(error => error.name === "shortName").message}⚡</p> : null}
                     </div>
                     <div className="flex flex-col w-full p-4 rounded-3xl bg-gray-600 bg-opacity-30">
                         <div className="flex flex-col md:items-center space-y-2 md:space-y-0 md:flex-row md:space-x-2 ">

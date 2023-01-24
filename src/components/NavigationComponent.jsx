@@ -13,9 +13,8 @@ function NavigationComponent(props) {
 
     if (loading) {
         return (
-            <div className="flex flex-row items-center mb-4 space-x-4">
-                <div className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow">
-                </div>
+            <div className="animate-pulse flex flex-row items-center mb-4 space-x-4">
+                <div className="bg-gray-600 bg-opacity-50 rounded-3xl p-4 text-center hover:shadow-lg transition-shadow h-10 w-10"></div>
             </div>
         )
     }
